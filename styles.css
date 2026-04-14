@@ -11,22 +11,22 @@
   --walnut:  #666666;
   --sand:    #d0d0d0;
   --linen:   #f6f6f6;
-  --parchment: #f9f9f9;
-  --cream:   #fdfcfb;
+  --parchment: #f8f4ee;  /* Very Light Beige */
+  --cream:   #f5efeb;    /* Light Beige Base */
   --white:   #ffffff;
 
   /* Accent Colors (Pinks) */
-  --clay:    #e8aeba;  /* Main Pink Accent */
+  --clay:    #fae8eb;  /* Main Pink Accent (Light) */
   --clay-lt: #fae8eb;  /* Light Pink Backgrounds */
-  --clay-dk: #d68997;  /* Darker Pink for Hover states */
+  --clay-dk: #e8c4c7;  /* Darker Pink for Hover states */
   
-  --sage:    #b5b5b5;  /* Neutralized secondary accent */
+  --sage:    #b5b5b5;  
   --sage-lt: #e0e0e0;
   
-  --rust:    #e8aeba;  /* Mapped to pink to align all accents */
+  --rust:    #e8c4c7;  
   --rust-lt: #fae8eb;
   
-  --red-dark: #111111; /* Topbar background mapped to black */
+  --red-dark: #fae8eb; /* Topbar banner mapped to light pink */
   
   --border:  #ececec;
   --faint:   #e0e0e0;
@@ -46,14 +46,14 @@ body {
 /* ── TOPBAR ── */
 .topbar {
   background: var(--red-dark);
-  color: #f5d5d0;
+  color: #111111;
   text-align: center;
   padding: 11px 20px;
   font-size: 12.5px;
   font-weight: 500;
   letter-spacing: 0.06em;
 }
-.topbar em { color: #ffc4b8; font-style: normal; font-weight: 700; }
+.topbar em { color: #444444; font-style: normal; font-weight: 700; }
 
 /* ── NAV ── */
 nav {
@@ -149,7 +149,7 @@ h1 em { font-style: italic; color: var(--clay); }
 .btn-primary {
   display: inline-block;
   background: var(--clay);
-  color: #fff;
+  color: #111111;
   font-family: 'Jost', sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -178,8 +178,9 @@ h1 em { font-style: italic; color: var(--clay); }
   background: var(--clay-dk);
   transform: translateY(-2px);
   box-shadow: 0 4px 20px rgba(155,110,78,0.35), 0 0 12px rgba(155,110,78,0.15);
+  box-shadow: 0 4px 20px rgba(184,106,121,0.35), 0 0 12px rgba(184,106,121,0.15);
 }
-.btn-primary:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(155,110,78,0.25); }
+.btn-primary:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(184,106,121,0.25); }
 
 .btn-outline {
   display: inline-block;
@@ -343,16 +344,16 @@ h1 em { font-style: italic; color: var(--clay); }
   flex-wrap: wrap;
 }
 @media(max-width:680px){ .admissions-inner { padding: 24px 20px; } }
-.adm-icon { width: 40px; height: 40px; color: #f5a898; flex-shrink: 0; }
+.adm-icon { width: 40px; height: 40px; color: #d68997; flex-shrink: 0; }
 .adm-icon svg { width: 40px; height: 40px; }
-.adm-text { flex: 1; min-width: 220px; font-size: 14px; color: #f0d8d4; line-height: 1.65; }
-.adm-text strong { display: block; font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; letter-spacing: 0.01em; }
-.adm-text em { font-style: normal; font-weight: 600; color: #ffc4b8; }
+.adm-text { flex: 1; min-width: 220px; font-size: 14px; color: #111111; line-height: 1.65; }
+.adm-text strong { display: block; font-size: 15px; font-weight: 600; color: #111111; margin-bottom: 4px; letter-spacing: 0.01em; }
+.adm-text em { font-style: normal; font-weight: 600; color: #444444; }
 .adm-cta {
   display: inline-block;
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.35);
-  color: #fff;
+  border: 1px solid rgba(17,17,17,0.35);
+  color: #111111;
   font-family: 'Jost', sans-serif;
   font-size: 13px;
   font-weight: 500;
