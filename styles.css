@@ -19,6 +19,7 @@
   --clay:    #fae8eb;  /* Main Pink Accent (Light) */
   --clay-lt: #fae8eb;  /* Light Pink Backgrounds */
   --clay-dk: #e8c4c7;  /* Darker Pink for Hover states */
+  --clay-text: #b86a79; /* High-contrast Pink for text on light backgrounds */
   
   --sage:    #b5b5b5;  
   --sage-lt: #e0e0e0;
@@ -428,13 +429,13 @@ h2 em { font-style: italic; color: var(--clay); }
 .tl-item p { font-size: 14px; color: var(--walnut); line-height: 1.6; }
 
 .reframe-block { background: var(--parchment); border-left: 3px solid var(--clay); padding: 32px 32px; margin-top: 0; }
-.reframe-block .rb-label { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--clay); margin-bottom: 12px; }
+.reframe-block .rb-label { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--clay-text); margin-bottom: 12px; }
 .reframe-block h3 { font-family: 'Cormorant Garamond', serif; font-size: clamp(22px, 3vw, 32px); font-weight: 600; line-height: 1.2; color: var(--soil); margin-bottom: 12px; }
-.reframe-block h3 em { font-style: italic; color: var(--clay); }
+.reframe-block h3 em { font-style: italic; color: var(--clay-text); }
 .reframe-block p { font-size: 15px; color: var(--walnut); line-height: 1.7; margin-bottom: 20px; }
 
 .consequence-block { background: var(--soil); padding: 24px 28px; margin-top: 20px; border-radius: 2px; }
-.consequence-block h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust-lt); margin-bottom: 14px; }
+.consequence-block h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--clay-text); margin-bottom: 14px; }
 .consequence-block li { list-style: none; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 14px; color: var(--sand); display: flex; align-items: center; gap: 12px; }
 .consequence-block li:last-child { border-bottom: none; }
 .consequence-block li::before { content: ''; display: block; width: 14px; height: 1px; background: var(--rust-lt); flex-shrink: 0; }
@@ -524,11 +525,11 @@ h2 em { font-style: italic; color: var(--clay); }
 .step-card.featured .step-result { color: #fff; border-left-color: rgba(255,255,255,0.5); }
 
 .outcome-checklist { margin-top: 40px; display: flex; flex-direction: column; align-items: center; }
-.outcome-cl-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--clay); margin-bottom: 20px; display: block; text-align: center; }
+.outcome-cl-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--clay-text); margin-bottom: 20px; display: block; text-align: center; }
 .outcome-cl-list { list-style: none; display: flex; flex-direction: column; width: 100%; max-width: 420px; text-align: left; }
 .outcome-cl-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--cedar); padding: 11px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
 .outcome-cl-list li:last-child { border-bottom: none; }
-.outcome-cl-list li::before { content: ''; display: block; width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; background: var(--sage); border-radius: 50%; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E"); background-size: 11px; background-repeat: no-repeat; background-position: center; }
+.outcome-cl-list li::before { content: ''; display: block; width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; background: var(--clay-text); border-radius: 50%; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E"); background-size: 11px; background-repeat: no-repeat; background-position: center; }
 
 /* ── VOICE NOTES ── */
 .voices-section { background: var(--soil); border-top: 1px solid var(--bark); }

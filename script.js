@@ -7,7 +7,7 @@
   'use strict';
 
   // ─── COUNTDOWN TIMER ───
-  const launchDate = new Date('2026-04-15T00:00:00');
+  const launchDate = new Date('2026-05-02T00:00:00');
   
   function tick() {
     const diff = launchDate - new Date();
