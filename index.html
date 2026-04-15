@@ -198,54 +198,31 @@
     <h2 data-reveal>In their own words.</h2>
     <p class="body-lg" data-reveal>Real voice notes from parents who enrolled their child in a previous cohort. Press play to hear what they had to say.</p>
 
-    <div class="voices-grid">
-      <div class="voice-card" data-reveal>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="voice-avatar">S</div>
-          <div class="voice-meta">
-            <span class="voice-name">Sarah M.</span>
-            <span class="voice-detail">Mother of a Year 12 student</span>
-          </div>
-        </div>
-        <p class="voice-quote">"I wish we had done this two years earlier. My daughter finally has a direction she is genuinely excited about."</p>
-        <div class="voice-player">
-          <div class="vp-play"></div>
-          <div class="vp-waveform" id="w1"></div>
-          <span class="vp-duration">0:47</span>
-        </div>
+    <div class="voices-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+      <div class="voice-card" data-reveal style="padding:0; overflow:hidden;">
+        <iframe src="https://player.vimeo.com/video/1183459157?h=0&title=0&byline=0&portrait=0" style="width:100%; aspect-ratio:9/16; border:none; display:block;" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
       </div>
 
-      <div class="voice-card" data-reveal data-delay="1">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="voice-avatar">R</div>
-          <div class="voice-meta">
-            <span class="voice-name">Rania K.</span>
-            <span class="voice-detail">Mother of a Year 11 student</span>
-          </div>
-        </div>
-        <p class="voice-quote">"Dr. Joanne did not just give my son a list. She helped him actually understand himself for the first time."</p>
-        <div class="voice-player">
-          <div class="vp-play"></div>
-          <div class="vp-waveform" id="w2"></div>
-          <span class="vp-duration">1:02</span>
-        </div>
+      <div class="voice-card" data-reveal data-delay="1" style="padding:0; overflow:hidden;">
+        <iframe src="https://player.vimeo.com/video/1183459088?h=0&title=0&byline=0&portrait=0" style="width:100%; aspect-ratio:9/16; border:none; display:block;" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
       </div>
+    </div>
 
-      <div class="voice-card" data-reveal data-delay="2">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="voice-avatar">N</div>
-          <div class="voice-meta">
-            <span class="voice-name">Nadia F.</span>
-            <span class="voice-detail">Mother of twin students</span>
-          </div>
+    <!-- Voice Note -->
+    <div class="voice-card" data-reveal data-delay="2" style="margin-top: 24px;">
+      <div style="display:flex;align-items:center;gap:12px; margin-bottom: 20px;">
+        <div class="voice-avatar" style="background:var(--clay-text); color:#fff;">
+          <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
         </div>
-        <p class="voice-quote">"Both my children came out with completely different plans. That is how personalised this was."</p>
-        <div class="voice-player">
-          <div class="vp-play"></div>
-          <div class="vp-waveform" id="w3"></div>
-          <span class="vp-duration">0:53</span>
+        <div class="voice-meta">
+          <span class="voice-name">Audio Testimonial</span>
+          <span class="voice-detail">Listen to a parent's experience</span>
         </div>
       </div>
+      <audio controls style="width:100%; height: 50px; outline:none; border-radius: 4px;">
+        <source src="whatsapp-audio-apr-14-2026.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
     </div>
 
   </div>
