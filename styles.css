@@ -150,7 +150,7 @@ h1 em { font-style: italic; color: var(--clay-text); }
 .btn-primary {
   display: inline-block;
   background: var(--clay-text);
-  color: #ffffff;
+  color: var(--soil);
   font-family: 'Jost', sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -504,12 +504,12 @@ h2 em { font-style: italic; color: var(--clay-text); }
 
 .step-card.featured { background: var(--clay-text); }
 .step-card.featured:hover { background: #efd0d5; }
-.step-card.featured .step-num { color: rgba(255,255,255,0.4); }
-.step-card.featured .step-icon { background: rgba(0,0,0,0.2); }
-.step-card.featured .step-icon svg { stroke: #fff; }
-.step-card.featured h4 { color: #fff; }
-.step-card.featured p { color: rgba(255,255,255,0.8); }
-.step-card.featured .step-result { color: #fff; border-left-color: rgba(255,255,255,0.5); }
+.step-card.featured .step-num { color: var(--soil); opacity: 0.6; }
+.step-card.featured .step-icon { background: rgba(0,0,0,0.05); }
+.step-card.featured .step-icon svg { stroke: var(--soil); }
+.step-card.featured h4 { color: var(--soil); }
+.step-card.featured p { color: var(--walnut); }
+.step-card.featured .step-result { color: var(--soil); border-left-color: rgba(0,0,0,0.2); }
 
 .outcome-checklist { margin-top: 40px; display: flex; flex-direction: column; align-items: center; }
 .outcome-cl-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--clay-text); margin-bottom: 20px; display: block; text-align: center; }
