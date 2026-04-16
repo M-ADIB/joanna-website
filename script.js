@@ -200,17 +200,8 @@
         if (section) {
           section.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-        // Open booking popup
-        const overlay = document.getElementById('bookingOverlay');
-        const frame   = document.getElementById('bookingFrame');
-        if (overlay && frame) {
-          // Lazy-load the iframe src to avoid loading it on page load
-          if (!frame.src || frame.src === window.location.href) {
-            frame.src = frame.dataset.src;
-          }
-          overlay.classList.add('active');
-          document.body.style.overflow = 'hidden';
-        }
+        // Open booking popup dialog
+        openPopup('bookingOverlay');
       } else {
         // Scroll to first error
         const firstError = form.querySelector('.has-error, .error');
@@ -221,29 +212,84 @@
     });
   }
 
-  // ─── BOOKING POPUP CLOSE ───
-  function closeBookingPopup() {
-    const overlay = document.getElementById('bookingOverlay');
+  // ─── POPUP HELPERS ───
+  function openPopup(id) {
+    const overlay = document.getElementById(id);
+    if (overlay) {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closePopup(id) {
+    const overlay = document.getElementById(id);
     if (overlay) {
       overlay.classList.remove('active');
       document.body.style.overflow = '';
     }
   }
 
-  const bookingCloseBtn = document.getElementById('bookingClose');
-  if (bookingCloseBtn) {
-    bookingCloseBtn.addEventListener('click', closeBookingPopup);
-  }
+  // Global function so inline onclick attrs can call it
+  window.openCheckout = function() {
+    openPopup('checkoutOverlay');
+  };
 
+  // ─── BOOKING POPUP WIRING ───
+  // Close button
+  const bookingCloseBtn = document.getElementById('bookingClose');
+  if (bookingCloseBtn) bookingCloseBtn.addEventListener('click', () => closePopup('bookingOverlay'));
+
+  // Backdrop click
   const bookingOverlay = document.getElementById('bookingOverlay');
   if (bookingOverlay) {
     bookingOverlay.addEventListener('click', function(e) {
-      if (e.target === bookingOverlay) closeBookingPopup();
+      if (e.target === bookingOverlay) closePopup('bookingOverlay');
     });
   }
 
+  // CTA button — open Stan booking link in new window
+  const bookingCta = document.getElementById('bookingCta');
+  if (bookingCta) {
+    bookingCta.addEventListener('click', function() {
+      window.open('https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac', '_blank', 'noopener,noreferrer');
+    });
+  }
+
+  // Skip button
+  const bookingSkip = document.getElementById('bookingSkip');
+  if (bookingSkip) bookingSkip.addEventListener('click', () => closePopup('bookingOverlay'));
+
+  // ─── CHECKOUT POPUP WIRING ───
+  // Close button
+  const checkoutCloseBtn = document.getElementById('checkoutClose');
+  if (checkoutCloseBtn) checkoutCloseBtn.addEventListener('click', () => closePopup('checkoutOverlay'));
+
+  // Backdrop click
+  const checkoutOverlay = document.getElementById('checkoutOverlay');
+  if (checkoutOverlay) {
+    checkoutOverlay.addEventListener('click', function(e) {
+      if (e.target === checkoutOverlay) closePopup('checkoutOverlay');
+    });
+  }
+
+  // CTA button — open Stan checkout link in new window
+  const checkoutCta = document.getElementById('checkoutCta');
+  if (checkoutCta) {
+    checkoutCta.addEventListener('click', function() {
+      window.open('https://stan.store/DrJoanne/p/join-me-at-the-career-clarity-cohort', '_blank', 'noopener,noreferrer');
+    });
+  }
+
+  // Skip button
+  const checkoutSkip = document.getElementById('checkoutSkip');
+  if (checkoutSkip) checkoutSkip.addEventListener('click', () => closePopup('checkoutOverlay'));
+
+  // Escape key closes any open popup
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeBookingPopup();
+    if (e.key === 'Escape') {
+      closePopup('bookingOverlay');
+      closePopup('checkoutOverlay');
+    }
   });
 
 })();
