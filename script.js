@@ -200,6 +200,17 @@
         if (section) {
           section.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+        // Open booking popup
+        const overlay = document.getElementById('bookingOverlay');
+        const frame   = document.getElementById('bookingFrame');
+        if (overlay && frame) {
+          // Lazy-load the iframe src to avoid loading it on page load
+          if (!frame.src || frame.src === window.location.href) {
+            frame.src = frame.dataset.src;
+          }
+          overlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
       } else {
         // Scroll to first error
         const firstError = form.querySelector('.has-error, .error');
@@ -209,5 +220,30 @@
       }
     });
   }
+
+  // ─── BOOKING POPUP CLOSE ───
+  function closeBookingPopup() {
+    const overlay = document.getElementById('bookingOverlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  const bookingCloseBtn = document.getElementById('bookingClose');
+  if (bookingCloseBtn) {
+    bookingCloseBtn.addEventListener('click', closeBookingPopup);
+  }
+
+  const bookingOverlay = document.getElementById('bookingOverlay');
+  if (bookingOverlay) {
+    bookingOverlay.addEventListener('click', function(e) {
+      if (e.target === bookingOverlay) closeBookingPopup();
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeBookingPopup();
+  });
 
 })();
