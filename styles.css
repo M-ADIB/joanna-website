@@ -658,10 +658,10 @@ h2 em { font-style: italic; color: var(--clay-dk); }
 .price-grid { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
 
 .price-wrong { border: 1px solid var(--border); background: var(--parchment); padding: 28px 28px; border-radius: 2px; }
-.price-wrong h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rust); margin-bottom: 16px; }
+.price-wrong h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--clay-dk); margin-bottom: 16px; }
 .price-wrong li { list-style: none; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--walnut); flex-wrap: wrap; }
 .price-wrong li:last-child { border-bottom: none; }
-.price-wrong li strong { color: var(--rust); font-weight: 600; white-space: nowrap; }
+.price-wrong li strong { color: var(--clay-dk); font-weight: 600; white-space: nowrap; }
 @media(max-width:480px){ .price-wrong li { flex-direction: column; align-items: flex-start; gap: 3px; } .price-wrong li strong { font-size: 16px; } }
 
 .price-right { border: 2px solid var(--clay-dk); background: var(--soil); padding: 32px 28px; border-radius: 2px; display: flex; flex-direction: column; gap: 16px; }
