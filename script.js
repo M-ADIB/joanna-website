@@ -200,6 +200,10 @@
         if (section) {
           section.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+        // ── Meta Pixel: Lead event (form submitted successfully) ──
+        if (typeof fbq === 'function') {
+          fbq('track', 'Lead');
+        }
         // Redirect to booking page
         setTimeout(() => {
           window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
@@ -213,5 +217,14 @@
       }
     });
   }
+
+  // ── Meta Pixel: InitiateCheckout on every checkout CTA click ──
+  document.querySelectorAll('a[href*="join-me-at-the-career-clarity-cohort"]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (typeof fbq === 'function') {
+        fbq('track', 'InitiateCheckout');
+      }
+    });
+  });
 
 })();
