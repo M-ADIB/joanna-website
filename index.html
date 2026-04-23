@@ -37,7 +37,7 @@ src="https://www.facebook.com/tr?id=992043610027863&ev=PageView&noscript=1"
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Career<span>Clarity</span> Cohort</div>
-  <a href="#apply-1on1" class="nav-cta">Secure Your Spot</a>
+  <a href="#" class="nav-cta cta-checkout">Secure Your Spot</a>
 </nav>
 
 <!-- STICKY CTA -->
@@ -48,7 +48,7 @@ src="https://www.facebook.com/tr?id=992043610027863&ev=PageView&noscript=1"
   </div>
   <div class="sticky-cta-right">
     <span class="sticky-cta-date">$497 launch price</span>
-    <a href="#apply-1on1" class="btn-primary">Secure Your Spot</a>
+    <a href="#" class="btn-primary cta-checkout">Secure Your Spot</a>
   </div>
 </div>
 
@@ -59,7 +59,7 @@ src="https://www.facebook.com/tr?id=992043610027863&ev=PageView&noscript=1"
     <h1>Not Sure What Your Child<br>Should Study in University?</h1>
     <p class="hero-sub">Before they choose a major, make sure it actually fits who they are, and where the world is going.</p>
     <div class="hero-actions">
-      <a href="#apply-1on1" class="btn-primary">Secure Your Child's Spot</a>
+      <a href="#" class="btn-primary cta-checkout">Secure Your Child's Spot</a>
     </div>
     <div class="hero-trust">
       <div class="trust-item">
@@ -361,7 +361,7 @@ src="https://www.facebook.com/tr?id=992043610027863&ev=PageView&noscript=1"
           </div>
         </div>
         <p>One session. One plan. One decision made right, before any of those numbers above become real.</p>
-        <a href="#apply-1on1" class="btn-primary">Secure Your Spot Now</a>
+        <a href="#" class="btn-primary cta-checkout">Secure Your Spot Now</a>
         <div class="guarantee-line">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <span>If your child completes the cohort and leaves without clarity, Dr. Joanne will work with them again at no extra charge.</span>
@@ -383,7 +383,7 @@ src="https://www.facebook.com/tr?id=992043610027863&ev=PageView&noscript=1"
       <div class="student-point">You will leave with a plan that is yours, not anyone else's expectations</div>
       <div class="student-point">You will get to speak directly with Dr. Joanne, one to one, with no pressure and no judgement</div>
     </div>
-    <a href="#apply-1on1" class="btn-primary">Join the May 2 Cohort</a>
+    <a href="#" class="btn-primary cta-checkout">Join the May 2 Cohort</a>
   </div>
 </section>
 
@@ -476,7 +476,7 @@ src="https://www.facebook.com/tr?id=992043610027863&ev=PageView&noscript=1"
     <div class="sec-label">Application deadlines are closing. The clock is real.</div>
     <h2>There is no version of this that gets easier if you wait.</h2>
     <p>Applications do not wait. And neither does the clarity your child needs to walk into this decision with confidence. Most families act too late. The ones who do not, do not regret it.</p>
-    <a href="#apply-1on1" class="btn-primary" style="font-size:15px;padding:18px 48px;">Secure Your Child's Spot | $497</a>
+    <a href="#" class="btn-primary cta-checkout" style="font-size:15px;padding:18px 48px;">Secure Your Child's Spot | $497</a>
     <div class="cta-meta">
       <span>Starts May 2, 2026</span>
       <span>Only 15 students per cohort</span>
@@ -627,6 +627,39 @@ src="https://www.facebook.com/tr?id=992043610027863&ev=PageView&noscript=1"
 <footer>
   © 2026 Career Clarity Cohort &nbsp;·&nbsp; Led by Dr. Joanne
 </footer>
+
+<!-- LEAD CAPTURE POPUP -->
+<div id="leadPopupOverlay" style="display:none;position:fixed;inset:0;background:rgba(43,30,22,.55);z-index:9000;align-items:center;justify-content:center;padding:20px;">
+  <div id="leadPopupCard" style="background:#fdf8f4;border:1px solid #ede7e3;border-radius:4px;width:100%;max-width:480px;padding:44px 40px;position:relative;">
+    <button id="leadPopupClose" style="position:absolute;top:16px;right:18px;background:none;border:none;font-size:22px;cursor:pointer;color:#c8bab2;line-height:1;">×</button>
+    <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#cf7185;margin-bottom:10px;">Almost there</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:#2b1e16;margin-bottom:8px;line-height:1.25;">Reserve your child's spot</h2>
+    <p style="font-size:13px;color:#5c3d2e;line-height:1.6;margin-bottom:28px;">Leave your details and we'll take you straight to checkout. Only 15 spots available at the $497 launch price.</p>
+    <form id="leadCaptureForm">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div>
+          <label style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#c8bab2;display:block;margin-bottom:6px;">First name *</label>
+          <input id="lcFirst" type="text" required placeholder="Sara" style="width:100%;border:1px solid #ede7e3;border-radius:2px;padding:12px 14px;font-family:'Jost',sans-serif;font-size:14px;color:#2b1e16;background:#fff;outline:none;transition:border-color .2s;">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#c8bab2;display:block;margin-bottom:6px;">Last name *</label>
+          <input id="lcLast" type="text" required placeholder="Al Mansoori" style="width:100%;border:1px solid #ede7e3;border-radius:2px;padding:12px 14px;font-family:'Jost',sans-serif;font-size:14px;color:#2b1e16;background:#fff;outline:none;transition:border-color .2s;">
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#c8bab2;display:block;margin-bottom:6px;">Email address *</label>
+        <input id="lcEmail" type="email" required placeholder="sara@email.com" style="width:100%;border:1px solid #ede7e3;border-radius:2px;padding:12px 14px;font-family:'Jost',sans-serif;font-size:14px;color:#2b1e16;background:#fff;outline:none;transition:border-color .2s;">
+      </div>
+      <div style="margin-bottom:24px;">
+        <label style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#c8bab2;display:block;margin-bottom:6px;">Phone <span style="opacity:.6;font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+        <input id="lcPhone" type="tel" placeholder="+971 50 000 0000" style="width:100%;border:1px solid #ede7e3;border-radius:2px;padding:12px 14px;font-family:'Jost',sans-serif;font-size:14px;color:#2b1e16;background:#fff;outline:none;transition:border-color .2s;">
+      </div>
+      <button type="submit" id="lcSubmitBtn" style="width:100%;background:#cf7185;color:#fff;font-family:'Jost',sans-serif;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border:none;border-radius:2px;padding:17px;cursor:pointer;transition:background .2s;">Continue to Checkout →</button>
+      <p style="font-size:11px;color:#c8bab2;text-align:center;margin-top:14px;line-height:1.5;">You'll be taken to our secure checkout page. No spam, ever.</p>
+    </form>
+  </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>

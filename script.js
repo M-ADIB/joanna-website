@@ -277,4 +277,86 @@
     });
   }
 
+  // ─── CHECKOUT LEAD CAPTURE POPUP ───
+  const CHECKOUT_URL = 'https://stan.store/DrJoanne/p/join-me-at-the-career-clarity-cohort';
+  const overlay      = document.getElementById('leadPopupOverlay');
+  const popupClose   = document.getElementById('leadPopupClose');
+  const lcForm       = document.getElementById('leadCaptureForm');
+  const lcSubmitBtn  = document.getElementById('lcSubmitBtn');
+
+  function openPopup() {
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePopup() {
+    if (!overlay) return;
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  // All checkout CTAs open popup
+  document.querySelectorAll('.cta-checkout').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      openPopup();
+    });
+  });
+
+  // Close on overlay click or × button
+  if (overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closePopup();
+    });
+  }
+  if (popupClose) popupClose.addEventListener('click', closePopup);
+
+  // ESC closes popup
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closePopup();
+  });
+
+  // Popup form submit
+  if (lcForm) {
+    lcForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      lcSubmitBtn.textContent = 'Saving…';
+      lcSubmitBtn.disabled    = true;
+
+      const first = document.getElementById('lcFirst').value.trim();
+      const last  = document.getElementById('lcLast').value.trim();
+      const email = document.getElementById('lcEmail').value.trim();
+      const phone = document.getElementById('lcPhone').value.trim();
+
+      // Save to Supabase (fire-and-forget)
+      fetch(SUPABASE_URL + '/rest/v1/form_submissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'apikey':        SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+          'Prefer':        'return=minimal'
+        },
+        body: JSON.stringify({
+          first_name: first,
+          last_name:  last,
+          email:      email,
+          phone:      phone,
+          investment: 'checkout',
+          notes:      'From checkout CTA popup'
+        })
+      }).catch(function() {});
+
+      // Fire Meta Pixel
+      if (typeof fbq === 'function') {
+        fbq('track', 'InitiateCheckout');
+        fbq('trackCustom', 'ApplicationSubmitted', { investment_choice: 'checkout' });
+      }
+
+      // Redirect to Stan Store
+      window.location.href = CHECKOUT_URL;
+    });
+  }
+
 })();
