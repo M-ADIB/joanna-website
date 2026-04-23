@@ -159,19 +159,24 @@
   });
 
   // ─── FORM VALIDATION & SUBMISSION ───
-  const form = document.getElementById('applicationForm');
-  const formContent = document.getElementById('formContent');
-  const formSuccess = document.getElementById('formSuccess');
+  const SUPABASE_URL = 'https://ljwrcnquefgucelbzwzq.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3JjbnF1ZWZndWNlbGJ6d3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzA4MzksImV4cCI6MjA5MjUwNjgzOX0.gECut5Xi7sZisAgWNQ4um7kflP_UXQUo5IaFFYEv4g0';
+
+  const form         = document.getElementById('applicationForm');
+  const formContent  = document.getElementById('formContent');
+  const formSuccess  = document.getElementById('formSuccess');
+  const formSuccessCohort = document.getElementById('formSuccessCohort');
 
   if (form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      
+
       let isValid = true;
-      
+
       // Clear previous errors
       form.querySelectorAll('.form-group.has-error').forEach(g => g.classList.remove('has-error'));
       form.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+      form.querySelectorAll('.form-radio-group').forEach(rg => rg.style.outline = '');
 
       // Validate required inputs
       form.querySelectorAll('[required]').forEach(input => {
@@ -185,46 +190,91 @@
 
       // Validate radio
       const radioGroup = form.querySelector('input[name="investment"]');
-      if (radioGroup && !form.querySelector('input[name="investment"]:checked')) {
+      const selectedInvestment = form.querySelector('input[name="investment"]:checked');
+      if (radioGroup && !selectedInvestment) {
         isValid = false;
         const rg = radioGroup.closest('.form-radio-group');
         if (rg) rg.style.outline = '1px solid var(--rust)';
       }
 
-      if (isValid) {
-        // Show success state
-        if (formContent) formContent.style.display = 'none';
-        if (formSuccess) formSuccess.classList.add('show');
-        // Scroll to success
-        const section = form.closest('section');
-        if (section) {
-          section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        // ── Meta Pixel: Lead event (form submitted successfully) ──
-        if (typeof fbq === 'function') {
-          fbq('track', 'Lead');
-        }
-        // Redirect to booking page
-        setTimeout(() => {
-          window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
-        }, 800);
-      } else {
-        // Scroll to first error
+      if (!isValid) {
         const firstError = form.querySelector('.has-error, .error');
-        if (firstError) {
-          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // ── Collect form data ──
+      const inputs  = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
+      const firstName = inputs[0] ? inputs[0].value.trim() : '';
+      const lastName  = inputs[1] ? inputs[1].value.trim() : '';
+      const email     = inputs[2] ? inputs[2].value.trim() : '';
+      const phone     = inputs[3] ? inputs[3].value.trim() : '';
+      const textareas = form.querySelectorAll('textarea');
+      const situation = textareas[0] ? textareas[0].value.trim() : '';
+      const notes     = textareas[1] ? textareas[1].value.trim() : '';
+      const selects   = form.querySelectorAll('select');
+      const childYear = selects[0] ? selects[0].value : '';
+      const childSituation = selects[1] ? selects[1].value : '';
+      const source    = selects[2] ? selects[2].value : '';
+      const investment = selectedInvestment ? selectedInvestment.value : '';
+
+      // ── Save to Supabase (fire-and-forget) ──
+      fetch(SUPABASE_URL + '/rest/v1/form_submissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          first_name:  firstName,
+          last_name:   lastName,
+          email:       email,
+          phone:       phone,
+          child_year:  childYear || childSituation,
+          situation:   situation,
+          investment:  investment,
+          source:      source,
+          notes:       notes
+        })
+      }).catch(function() {
+        // Silent fail — submission still routes correctly even if Supabase is unreachable
+      });
+
+      // ── Meta Pixel: custom ApplicationSubmitted event ──
+      if (typeof fbq === 'function') {
+        fbq('trackCustom', 'ApplicationSubmitted', { investment_choice: investment });
+      }
+
+      // ── Hide the form ──
+      if (formContent) formContent.style.display = 'none';
+
+      // ── Route based on investment choice ──
+      if (investment === 'cohort') {
+        // Show two-button success screen — user decides their next step
+        if (formSuccessCohort) formSuccessCohort.style.display = 'block';
+        const section = form.closest('section');
+        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Fire InitiateCheckout only when they click the checkout button
+        const checkoutBtn = document.getElementById('btnCohortCheckout');
+        if (checkoutBtn) {
+          checkoutBtn.addEventListener('click', function() {
+            if (typeof fbq === 'function') fbq('track', 'InitiateCheckout');
+          }, { once: true });
         }
+
+      } else {
+        // 'yes' ($1,000+) or 'unsure' → redirect to Book a Call
+        if (formSuccess) formSuccess.style.display = 'block';
+        const section = form.closest('section');
+        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(function() {
+          window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
+        }, 2200);
       }
     });
   }
-
-  // ── Meta Pixel: InitiateCheckout on every checkout CTA click ──
-  document.querySelectorAll('a[href*="join-me-at-the-career-clarity-cohort"]').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      if (typeof fbq === 'function') {
-        fbq('track', 'InitiateCheckout');
-      }
-    });
-  });
 
 })();

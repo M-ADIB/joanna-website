@@ -631,6 +631,10 @@ h2 em { font-style: italic; color: var(--clay-dk); }
 .form-success .success-icon { width: 56px; height: 56px; background: var(--sage); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
 .form-success h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; color: var(--soil); margin-bottom: 12px; }
 .form-success p { font-size: 15px; color: var(--walnut); line-height: 1.7; }
+.success-actions { display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 28px; }
+.success-btn-primary { display: inline-block; }
+.success-btn-secondary { display: inline-block; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; color: var(--clay-dk); text-decoration: underline; text-underline-offset: 3px; letter-spacing: 0.04em; cursor: pointer; transition: opacity 0.2s; }
+.success-btn-secondary:hover { opacity: 0.7; }
 
 /* ── FAQ ── */
 .faq-section { background: var(--white); }
