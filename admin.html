@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Applications — Dr. Joanne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --soil:    #2b1e16;
+    --walnut:  #5c3d2e;
+    --clay:    #e8a0b0;
+    --clay-dk: #cf7185;
+    --sage:    #8aab9b;
+    --cream:   #fdf8f4;
+    --white:   #ffffff;
+    --faint:   #c8bab2;
+    --border:  #ede7e3;
+    --error:   #c0392b;
+  }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--soil);
+    min-height: 100vh;
+  }
+
+  /* ── LOGIN ── */
+  .login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+
+  .login-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 56px 48px;
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+  }
+
+  .login-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--soil);
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+
+  .login-logo span { color: var(--clay-dk); }
+
+  .login-sub {
+    font-size: 13px;
+    color: var(--faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .login-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--soil);
+    margin-bottom: 8px;
+  }
+
+  .login-card p {
+    font-size: 14px;
+    color: var(--walnut);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .login-input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 14px 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    color: var(--soil);
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+  }
+
+  .login-input:focus { border-color: var(--clay-dk); }
+
+  .login-btn {
+    width: 100%;
+    background: var(--clay-dk);
+    color: #fff;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    padding: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .login-btn:hover { background: #b5606f; }
+  .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .login-msg {
+    margin-top: 16px;
+    font-size: 13px;
+    min-height: 20px;
+  }
+
+  .login-msg.success { color: var(--sage); }
+  .login-msg.error   { color: var(--error); }
+
+  /* ── DASHBOARD ── */
+  .dash { display: none; }
+
+  .dash-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dash-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--soil);
+  }
+
+  .dash-logo span { color: var(--clay-dk); }
+
+  .dash-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .dash-user {
+    font-size: 13px;
+    color: var(--faint);
+  }
+
+  .sign-out-btn {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--walnut);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+  }
+
+  .dash-body { padding: 40px; max-width: 1100px; margin: 0 auto; }
+
+  .dash-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 24px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 10px;
+  }
+
+  .stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--soil);
+    line-height: 1;
+  }
+
+  .stat-sub {
+    font-size: 12px;
+    color: var(--faint);
+    margin-top: 6px;
+  }
+
+  .dash-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .dash-section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--soil);
+  }
+
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: var(--white);
+    color: var(--walnut);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn.active,
+  .filter-btn:hover {
+    background: var(--clay-dk);
+    color: #fff;
+    border-color: var(--clay-dk);
+  }
+
+  /* ── SUBMISSION CARDS ── */
+  .cards-grid { display: flex; flex-direction: column; gap: 16px; }
+
+  .sub-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 32px;
+    transition: box-shadow 0.2s;
+  }
+
+  .sub-card:hover { box-shadow: 0 4px 20px rgba(43,30,22,0.07); }
+
+  .sub-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .sub-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--soil);
+    margin-bottom: 4px;
+  }
+
+  .sub-contact {
+    font-size: 13px;
+    color: var(--walnut);
+  }
+
+  .sub-contact a {
+    color: var(--clay-dk);
+    text-decoration: none;
+  }
+
+  .sub-contact a:hover { text-decoration: underline; }
+
+  .sub-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .badge-yes    { background: #e8f5e9; color: #2e7d32; }
+  .badge-cohort { background: #fff3e0; color: #e65100; }
+  .badge-unsure { background: #f3e5f5; color: #6a1b9a; }
+
+  .sub-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 16px 0;
+  }
+
+  .sub-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 32px;
+  }
+
+  .sub-detail-item { }
+
+  .sub-detail-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 3px;
+  }
+
+  .sub-detail-value {
+    font-size: 13px;
+    color: var(--walnut);
+    line-height: 1.5;
+  }
+
+  .sub-situation {
+    grid-column: 1 / -1;
+  }
+
+  .sub-date {
+    font-size: 11px;
+    color: var(--faint);
+    margin-top: 14px;
+    text-align: right;
+  }
+
+  /* ── EMPTY ── */
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--faint);
+  }
+
+  .empty-state h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--walnut);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p { font-size: 14px; }
+
+  /* ── LOADING ── */
+  .loading-wrap {
+    text-align: center;
+    padding: 60px;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--border);
+    border-top-color: var(--clay-dk);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── SENT SCREEN ── */
+  .sent-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 56px 48px;
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+  }
+
+  .sent-icon {
+    width: 56px; height: 56px;
+    background: var(--sage);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+  }
+
+  .sent-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .sent-card p { font-size: 14px; color: var(--walnut); line-height: 1.6; }
+
+  @media (max-width: 680px) {
+    .dash-header { padding: 0 20px; }
+    .dash-body { padding: 24px 20px; }
+    .dash-stats { grid-template-columns: 1fr 1fr; }
+    .sub-details { grid-template-columns: 1fr; }
+    .sub-card { padding: 20px; }
+    .login-card { padding: 40px 24px; }
+    .filter-bar { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN VIEW -->
+<div class="login-wrap" id="viewLogin">
+  <div id="loginCard" class="login-card">
+    <div class="login-logo">Career<span>Clarity</span> Cohort</div>
+    <div class="login-sub">Admin Portal</div>
+    <h2>Sign in</h2>
+    <p>Enter your email below and we'll send you a secure link to access all form submissions.</p>
+    <input type="email" class="login-input" id="loginEmail" placeholder="your@email.com" autocomplete="email">
+    <button class="login-btn" id="loginBtn">Send Magic Link</button>
+    <div class="login-msg" id="loginMsg"></div>
+  </div>
+
+  <div id="sentCard" class="sent-card" style="display:none;">
+    <div class="sent-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2>Check your email</h2>
+    <p>A sign-in link has been sent to your email address. Click it to access your submissions dashboard.</p>
+  </div>
+</div>
+
+<!-- DASHBOARD VIEW -->
+<div class="dash" id="viewDash">
+  <header class="dash-header">
+    <div class="dash-logo">Career<span>Clarity</span> Cohort</div>
+    <div class="dash-right">
+      <span class="dash-user" id="dashUser"></span>
+      <button class="sign-out-btn" id="signOutBtn">Sign out</button>
+    </div>
+  </header>
+
+  <div class="dash-body">
+    <div class="dash-stats" id="statsRow">
+      <div class="stat-card">
+        <div class="stat-label">Total Applications</div>
+        <div class="stat-value" id="statTotal">—</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Ready to Invest $1k+</div>
+        <div class="stat-value" id="statYes">—</div>
+        <div class="stat-sub">1-on-1 candidates</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Cohort at $497</div>
+        <div class="stat-value" id="statCohort">—</div>
+        <div class="stat-sub">Group cohort interest</div>
+      </div>
+    </div>
+
+    <div class="dash-section-header">
+      <div class="dash-section-title">Applications</div>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="yes">1-on-1</button>
+        <button class="filter-btn" data-filter="cohort">Cohort</button>
+        <button class="filter-btn" data-filter="unsure">Unsure</button>
+      </div>
+    </div>
+
+    <div id="cardsContainer">
+      <div class="loading-wrap"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const SUPABASE_URL     = 'https://ljwrcnquefgucelbzwzq.supabase.co';
+  const SUPABASE_ANON    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3JjbnF1ZWZndWNlbGJ6d3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzA4MzksImV4cCI6MjA5MjUwNjgzOX0.gECut5Xi7sZisAgWNQ4um7kflP_UXQUo5IaFFYEv4g0';
+
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  const viewLogin  = document.getElementById('viewLogin');
+  const viewDash   = document.getElementById('viewDash');
+  const loginCard  = document.getElementById('loginCard');
+  const sentCard   = document.getElementById('sentCard');
+  const loginEmail = document.getElementById('loginEmail');
+  const loginBtn   = document.getElementById('loginBtn');
+  const loginMsg   = document.getElementById('loginMsg');
+  const dashUser   = document.getElementById('dashUser');
+  const signOutBtn = document.getElementById('signOutBtn');
+
+  let allSubmissions = [];
+  let activeFilter   = 'all';
+
+  // ── AUTH STATE ──
+  supabase.auth.onAuthStateChange(async (_event, session) => {
+    if (session) {
+      viewLogin.style.display = 'none';
+      viewDash.style.display  = 'block';
+      dashUser.textContent    = session.user.email;
+      await loadSubmissions();
+    } else {
+      viewLogin.style.display = 'flex';
+      viewDash.style.display  = 'none';
+    }
+  });
+
+  // ── MAGIC LINK ──
+  loginBtn.addEventListener('click', async () => {
+    const email = loginEmail.value.trim();
+    if (!email || !email.includes('@')) {
+      loginMsg.textContent = 'Please enter a valid email address.';
+      loginMsg.className   = 'login-msg error';
+      return;
+    }
+    loginBtn.disabled    = true;
+    loginBtn.textContent = 'Sending…';
+    loginMsg.textContent = '';
+
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.href }
+    });
+
+    if (error) {
+      loginMsg.textContent = 'Something went wrong. Please try again.';
+      loginMsg.className   = 'login-msg error';
+      loginBtn.disabled    = false;
+      loginBtn.textContent = 'Send Magic Link';
+    } else {
+      loginCard.style.display = 'none';
+      sentCard.style.display  = 'block';
+    }
+  });
+
+  loginEmail.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.click(); });
+
+  // ── SIGN OUT ──
+  signOutBtn.addEventListener('click', async () => {
+    await supabase.auth.signOut();
+  });
+
+  // ── FILTERS ──
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      renderCards();
+    });
+  });
+
+  // ── LOAD DATA ──
+  async function loadSubmissions() {
+    const { data, error } = await supabase
+      .from('form_submissions')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      document.getElementById('cardsContainer').innerHTML =
+        '<div class="empty-state"><h3>Could not load submissions</h3><p>' + error.message + '</p></div>';
+      return;
+    }
+
+    allSubmissions = data || [];
+    updateStats();
+    renderCards();
+  }
+
+  // ── STATS ──
+  function updateStats() {
+    document.getElementById('statTotal').textContent  = allSubmissions.length;
+    document.getElementById('statYes').textContent    = allSubmissions.filter(s => s.investment === 'yes').length;
+    document.getElementById('statCohort').textContent = allSubmissions.filter(s => s.investment === 'cohort').length;
+  }
+
+  // ── RENDER ──
+  function renderCards() {
+    const filtered = activeFilter === 'all'
+      ? allSubmissions
+      : allSubmissions.filter(s => s.investment === activeFilter);
+
+    const container = document.getElementById('cardsContainer');
+
+    if (!filtered.length) {
+      container.innerHTML = '<div class="empty-state"><h3>No applications yet</h3><p>Submissions will appear here as people fill out the form.</p></div>';
+      return;
+    }
+
+    container.innerHTML = '<div class="cards-grid">' + filtered.map(card).join('') + '</div>';
+  }
+
+  // ── BADGE ──
+  function investmentBadge(val) {
+    const map = {
+      yes:    ['badge-yes',    '1-on-1 — $1,000+'],
+      cohort: ['badge-cohort', 'Cohort — $497'],
+      unsure: ['badge-unsure', 'Not sure yet']
+    };
+    const [cls, label] = map[val] || ['badge-unsure', val];
+    return '<span class="sub-badge ' + cls + '">' + label + '</span>';
+  }
+
+  // ── CARD TEMPLATE ──
+  function card(s) {
+    const date = new Date(s.created_at).toLocaleDateString('en-GB', {
+      day: 'numeric', month: 'long', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+
+    const phone = s.phone
+      ? '<span style="margin-left:12px;">· <a href="tel:' + s.phone + '">' + s.phone + '</a></span>'
+      : '';
+
+    return `
+      <div class="sub-card">
+        <div class="sub-card-top">
+          <div>
+            <div class="sub-name">${esc(s.first_name)} ${esc(s.last_name)}</div>
+            <div class="sub-contact">
+              <a href="mailto:${esc(s.email)}">${esc(s.email)}</a>${phone}
+            </div>
+          </div>
+          ${investmentBadge(s.investment)}
+        </div>
+        <hr class="sub-divider">
+        <div class="sub-details">
+          ${s.child_year ? `<div class="sub-detail-item"><div class="sub-detail-label">Child's Year</div><div class="sub-detail-value">${esc(s.child_year)}</div></div>` : ''}
+          ${s.source ? `<div class="sub-detail-item"><div class="sub-detail-label">Heard About Us</div><div class="sub-detail-value">${esc(s.source)}</div></div>` : ''}
+          ${s.situation ? `<div class="sub-detail-item sub-situation"><div class="sub-detail-label">Their Situation</div><div class="sub-detail-value">${esc(s.situation)}</div></div>` : ''}
+          ${s.notes ? `<div class="sub-detail-item sub-situation"><div class="sub-detail-label">Additional Notes</div><div class="sub-detail-value">${esc(s.notes)}</div></div>` : ''}
+        </div>
+        <div class="sub-date">Submitted ${date}</div>
+      </div>`;
+  }
+
+  function esc(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+})();
+</script>
+</body>
+</html>
