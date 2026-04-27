@@ -146,6 +146,8 @@
   // ─── SMOOTH SCROLL WITH OFFSET ───
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
+      // Skip checkout CTAs — they have their own popup handler
+      if (this.classList.contains('cta-checkout')) return;
       const targetId = this.getAttribute('href');
       if (targetId === '#') return;
       const target = document.querySelector(targetId);
