@@ -250,28 +250,38 @@
         fbq('track', 'Lead');
       }
 
-      // ── Hide the form ──
+      // ── Show inline success then route by selection ──
       if (formContent) formContent.style.display = 'none';
-
-      // ── Show inline success then redirect to Book a Call ──
       if (formSuccess) formSuccess.style.display = 'block';
       const section = form.closest('section');
       if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
       setTimeout(function() {
-        window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
+        if (investment === 'yes') {
+          // 1-on-1 → Book a Call
+          window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
+        } else if (investment === 'cohort') {
+          // Group cohort → Checkout
+          if (typeof fbq === 'function') fbq('track', 'InitiateCheckout');
+          window.location.href = 'https://stan.store/DrJoanne/p/join-me-at-the-career-clarity-cohort';
+        } else {
+          // Unsure → WhatsApp
+          window.location.href = 'https://wa.me/971502835898';
+        }
       }, 1200);
     });
   }
 
-  // ─── ALL CTAs → DIRECT CHECKOUT REDIRECT ───
-  const CHECKOUT_URL = 'https://stan.store/DrJoanne/p/join-me-at-the-career-clarity-cohort';
-
+  // ─── ALL CTAs → SCROLL TO FORM ───
   document.querySelectorAll('.cta-checkout').forEach(function(btn) {
     btn.addEventListener('click', function(e) {
       e.preventDefault();
-      if (typeof fbq === 'function') fbq('track', 'InitiateCheckout');
-      window.location.href = CHECKOUT_URL;
+      const formSection = document.getElementById('apply-1on1');
+      if (formSection) {
+        const offset = 80;
+        const top = formSection.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
     });
   });
 
