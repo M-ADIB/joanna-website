@@ -39,24 +39,63 @@
   setInterval(tick, 1000);
 
   // ─── DYNAMIC DATE FROM SUPABASE SETTINGS ───
-  // Fetches 'cohort_start_date' from settings table and replaces all
-  // [COHORT_DATE] placeholders in the DOM (set by dashboard).
+  // Fetches cohort_start_date and replaces EVERY date mention in the DOM —
+  // tagged elements (data-cohort-date) AND raw text nodes (banner, buttons, etc.)
   (function loadCohortDate() {
     var SUPA = 'https://ljwrcnquefgucelbzwzq.supabase.co';
     var KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3JjbnF1ZWZndWNlbGJ6d3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzA4MzksImV4cCI6MjA5MjUwNjgzOX0.gECut5Xi7sZisAgWNQ4um7kflP_UXQUo5IaFFYEv4g0';
+
+    // ── Walk every text node in the DOM and replace date patterns ──
+    function replaceTextDates(oldShort, oldFull, newShort, newFull) {
+      var walker = document.createTreeWalker(
+        document.body, NodeFilter.SHOW_TEXT, null, false
+      );
+      var node;
+      while ((node = walker.nextNode())) {
+        var t = node.nodeValue;
+        if (!t) continue;
+        // Replace full date first (e.g. "May 16, 2026"), then short (e.g. "May 16")
+        var updated = t
+          .replace(new RegExp(oldFull.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'g'), newFull)
+          .replace(new RegExp(oldShort.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'g'), newShort);
+        if (updated !== t) node.nodeValue = updated;
+      }
+    }
+
     fetch(SUPA + '/rest/v1/settings?key=eq.cohort_start_date&select=value', {
       headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY }
     })
     .then(function(r) { return r.json(); })
     .then(function(rows) {
       if (!rows || !rows[0]) return;
-      var date  = rows[0].value;                        // e.g. "May 16, 2026"
-      var short = date.replace(/, \d{4}$/, '');         // e.g. "May 16"
+      var newFull  = rows[0].value;                      // e.g. "May 16, 2026"
+      var newShort = newFull.replace(/, \d{4}$/, '');    // e.g. "May 16"
+
+      // 1. Update tagged [data-cohort-date] elements
       document.querySelectorAll('[data-cohort-date]').forEach(function(el) {
-        el.textContent = el.getAttribute('data-cohort-date') === 'short' ? short : date;
+        el.textContent = el.getAttribute('data-cohort-date') === 'short' ? newShort : newFull;
       });
-      var parsed = new Date(date);
-      if (!isNaN(parsed.getTime())) launchDateRef.t = parsed.getTime();
+
+      // 2. Walk all text nodes — covers banner, sticky bar, buttons, paragraphs, etc.
+      //    We swap against the current static fallback dates in the HTML.
+      var staticShort = 'May 16';
+      var staticFull  = 'May 16, 2026';
+      replaceTextDates(staticShort, staticFull, newShort, newFull);
+
+      // 3. Update the urgency-sub "closes" line (day before cohort start)
+      var parsed = new Date(newFull);
+      if (!isNaN(parsed.getTime())) {
+        launchDateRef.t = parsed.getTime();
+        var dayBefore = new Date(parsed.getTime() - 86400000);
+        var closesStr = dayBefore.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+        // e.g. "15 May" → reformat to "May 15"
+        var parts = closesStr.split(' ');
+        if (parts.length === 2) closesStr = parts[1] + ' ' + parts[0];
+        var subEl = document.querySelector('.urgency-sub');
+        if (subEl) {
+          subEl.textContent = subEl.textContent.replace(/May \d+/, closesStr);
+        }
+      }
     })
     .catch(function() {});
   })();
