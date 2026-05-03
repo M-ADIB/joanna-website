@@ -7,10 +7,10 @@
   'use strict';
 
   // ─── COUNTDOWN TIMER ───
-  const launchDate = new Date('2026-05-02T00:00:00');
+  const launchDateRef = { t: new Date('2026-05-16T00:00:00').getTime() };
   
   function tick() {
-    const diff = launchDate - new Date();
+    const diff = launchDateRef.t - Date.now();
     const dEl = document.getElementById('cd-d');
     const hEl = document.getElementById('cd-h');
     const mEl = document.getElementById('cd-m');
@@ -37,6 +37,29 @@
   }
   tick();
   setInterval(tick, 1000);
+
+  // ─── DYNAMIC DATE FROM SUPABASE SETTINGS ───
+  // Fetches 'cohort_start_date' from settings table and replaces all
+  // [COHORT_DATE] placeholders in the DOM (set by dashboard).
+  (function loadCohortDate() {
+    var SUPA = 'https://ljwrcnquefgucelbzwzq.supabase.co';
+    var KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3JjbnF1ZWZndWNlbGJ6d3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzA4MzksImV4cCI6MjA5MjUwNjgzOX0.gECut5Xi7sZisAgWNQ4um7kflP_UXQUo5IaFFYEv4g0';
+    fetch(SUPA + '/rest/v1/settings?key=eq.cohort_start_date&select=value', {
+      headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(rows) {
+      if (!rows || !rows[0]) return;
+      var date  = rows[0].value;                        // e.g. "May 16, 2026"
+      var short = date.replace(/, \d{4}$/, '');         // e.g. "May 16"
+      document.querySelectorAll('[data-cohort-date]').forEach(function(el) {
+        el.textContent = el.getAttribute('data-cohort-date') === 'short' ? short : date;
+      });
+      var parsed = new Date(date);
+      if (!isNaN(parsed.getTime())) launchDateRef.t = parsed.getTime();
+    })
+    .catch(function() {});
+  })();
 
   // ─── STICKY CTA ───
   const stickyCta = document.getElementById('stickyCta');
