@@ -322,13 +322,10 @@
         if (investment === 'yes') {
           // 1-on-1 → Book a Call
           window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
-        } else if (investment === 'cohort') {
+        } else {
           // Group cohort → Checkout
           if (typeof fbq === 'function') fbq('track', 'InitiateCheckout');
           window.location.href = 'https://stan.store/DrJoanne/p/join-me-at-the-career-clarity-cohort';
-        } else {
-          // Unsure → WhatsApp
-          window.location.href = 'https://wa.me/971502835898';
         }
       }, 1200);
     });
