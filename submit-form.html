@@ -557,7 +557,11 @@ function checkInvestment() {
 }
 
 function handleSubmit() {
+  var SUPA_URL = 'https://ljwrcnquefgucelbzwzq.supabase.co';
+  var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3JjbnF1ZWZndWNlbGJ6d3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzA4MzksImV4cCI6MjA5MjUwNjgzOX0.gECut5Xi7sZisAgWNQ4um7kflP_UXQUo5IaFFYEv4g0';
+
   const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
   const email = document.getElementById('email').value.trim();
   const phone = document.getElementById('phone').value.trim();
   const inv   = document.querySelector('input[name="investment"]:checked')?.value;
@@ -570,6 +574,46 @@ function handleSubmit() {
     alert('Please confirm your investment readiness.');
     return;
   }
+
+  // Collect optional fields based on audience type
+  var situation = '';
+  var childYear = '';
+  var notes = '';
+  var referral = document.getElementById('referral')?.value || '';
+  var extra = document.getElementById('extra')?.value || '';
+
+  if (currentAudience === 'parent') {
+    childYear = document.getElementById('year-group')?.value || '';
+    situation = document.getElementById('situation-parent')?.value || '';
+    notes = (document.getElementById('tried-parent')?.value || '') + (extra ? '\n\nExtra: ' + extra : '');
+  } else {
+    situation = document.getElementById('situation-adult')?.value || '';
+    var tried = document.getElementById('tried-adult')?.value || '';
+    var outcome = document.getElementById('outcome-adult')?.value || '';
+    notes = (tried ? 'Tried: ' + tried : '') + (outcome ? '\nOutcome: ' + outcome : '') + (extra ? '\nExtra: ' + extra : '');
+  }
+
+  // ── Save to Supabase (fire-and-forget) ──
+  fetch(SUPA_URL + '/rest/v1/form_submissions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPA_KEY,
+      'Authorization': 'Bearer ' + SUPA_KEY,
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      first_name: fname,
+      last_name:  lname,
+      email:      email,
+      phone:      phone,
+      child_year: childYear,
+      situation:  situation,
+      investment: inv,
+      source:     'standalone-form (' + currentAudience + ')',
+      notes:      notes
+    })
+  }).catch(function() {});
 
   // Meta Pixel — fire on every submission
   if (typeof fbq === 'function') {
