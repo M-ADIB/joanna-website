@@ -498,6 +498,11 @@ footer {
       </div>
       <button class="form-submit" id="submit-btn" onclick="handleSubmit()">Submit My Application</button>
       <p class="form-note">Dr. Joanne personally reviews every application and will respond within 48 hours. Submitting this form does not guarantee a session.</p>
+      <div id="thankYouMessage" style="display:none; background:var(--parchment); border:1px solid var(--border); border-radius:4px; padding:32px; margin-top:20px; text-align:center;">
+        <div style="font-size:28px; margin-bottom:12px;">✓</div>
+        <h3 style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; color:var(--soil); margin-bottom:8px;">Thank you for submitting</h3>
+        <p style="font-size:14px; color:var(--walnut); line-height:1.6;">Dr. Joanne will personally review your application and reach out if there's a fit. You'll hear back within 48 hours.</p>
+      </div>
     </div>
 
   </div>
@@ -508,8 +513,7 @@ footer {
 </footer>
 
 <script>
-const CALENDLY_URL = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
-const COHORT_URL   = 'career-clarity-cohort-v6.html';
+const COHORT_URL = 'career-clarity-cohort-v6.html';
 
 let currentAudience = 'parent';
 
@@ -574,7 +578,15 @@ function handleSubmit() {
   }
 
   if (inv === 'yes') {
-    window.location.href = CALENDLY_URL;
+    // Qualified → redirect to Stan Store booking
+    window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
+  } else {
+    // Not ready → show thank-you message, hide form
+    document.getElementById('main-form-rest').style.display = 'none';
+    document.getElementById('submit-btn').style.display = 'none';
+    document.querySelector('.form-note').style.display = 'none';
+    document.getElementById('thankYouMessage').style.display = 'block';
+    document.getElementById('thankYouMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 
