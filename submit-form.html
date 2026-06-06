@@ -443,39 +443,86 @@ footer {
       </div>
     </div>
 
-    <!-- INVESTMENT -->
-    <hr class="form-divider">
-    <span class="form-section-label">Investment readiness</span>
+    <!-- QUALIFYING QUESTIONS — PARENT -->
+    <div id="qualify-parent">
+      <hr class="form-divider">
+      <span class="form-section-label">A few more questions</span>
 
-    <div class="investment-box" id="investment-box-parent">
-      <p>Dr. Joanne's private 1-on-1 program starts from <strong>$1,000</strong>. Your child will work directly with Dr. Joanne, receive personalised guidance built around who they are, and get access to real industry experts for insights and guidance that help them make better decisions. Please let us know where you stand.</p>
-    </div>
-    <div class="investment-box" id="investment-box-adult" style="display:none;">
-      <p>Dr. Joanne's private 1-on-1 program starts from <strong>$1,000</strong>. This is a focused, personalised experience built entirely around your career, your strengths, and the direction that is right for you. Please let us know where you stand.</p>
+      <div class="form-group">
+        <label class="form-label">Are you ready to invest in your child's future? <span class="req">*</span></label>
+        <div class="form-radio-group" id="parent-invest-group">
+          <label class="form-radio-item">
+            <input type="radio" name="parent_invest" value="yes" onchange="checkQualify()">
+            <span>Yes</span>
+          </label>
+          <label class="form-radio-item">
+            <input type="radio" name="parent_invest" value="no" onchange="checkQualify()">
+            <span>No</span>
+          </label>
+        </div>
+      </div>
+
+      <div id="parent-extra-qs">
+        <div class="form-group">
+          <label class="form-label">Have you previously enrolled your child in tutoring, counseling, or educational programs?</label>
+          <select class="form-select" id="prev-programs">
+            <option value="" disabled selected>Select an option</option>
+            <option>Yes, multiple programs</option>
+            <option>Yes, one or two</option>
+            <option>No, this would be the first</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">How important is this decision to your family right now? <span class="req">*</span></label>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:6px;">
+            <span style="font-size:12px;color:var(--walnut);">Not urgent</span>
+            <input type="range" id="importance-scale" min="1" max="10" value="5" style="flex:1;accent-color:var(--clay);">
+            <span style="font-size:12px;color:var(--walnut);">Extremely</span>
+            <span id="importance-value" style="font-size:14px;font-weight:600;color:var(--soil);min-width:24px;text-align:center;">5</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parent disqualified -->
+      <div id="parent-disqualified" style="display:none; background:var(--parchment); border:1px solid var(--border); border-radius:4px; padding:28px; margin-top:16px; text-align:center;">
+        <div style="font-size:28px; margin-bottom:12px;">✓</div>
+        <h3 style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--soil); margin-bottom:8px;">Thank you for your interest</h3>
+        <p style="font-size:14px; color:var(--walnut); line-height:1.6;">Dr. Joanne will review your application and reach out if there's a fit. You'll hear back within 48 hours.</p>
+      </div>
     </div>
 
-    <div class="form-radio-group" id="investment-group">
-      <label class="form-radio-item">
-        <input type="radio" name="investment" value="yes" id="inv-yes" onchange="checkInvestment()">
-        <span>Yes, I am ready to make this investment</span>
-      </label>
-      <label class="form-radio-item" id="inv-unsure-row">
-        <input type="radio" name="investment" value="unsure" id="inv-unsure" onchange="checkInvestment()">
-        <span>I am not ready to invest at this level yet</span>
-      </label>
-    </div>
+    <!-- QUALIFYING QUESTIONS — ADULT -->
+    <div id="qualify-adult" style="display:none;">
+      <hr class="form-divider">
+      <span class="form-section-label">A few more questions</span>
 
-    <!-- ADULT CLOSED DOOR -->
-    <div id="adult-closed" style="display:none; background:var(--parchment); border:1px solid var(--border); border-radius:2px; padding:24px; margin-top:16px; text-align:center;">
-      <p style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--soil); margin-bottom:8px;">No problem at all.</p>
-      <p style="font-size:14px; color:var(--walnut); line-height:1.7;">When you are ready, Dr. Joanne's program will be here. Feel free to come back at any time.</p>
-    </div>
+      <div class="form-group">
+        <label class="form-label">Are you willing to invest in your professional development? <span class="req">*</span></label>
+        <div class="form-radio-group" id="adult-invest-group">
+          <label class="form-radio-item">
+            <input type="radio" name="adult_invest" value="yes" onchange="checkQualify()">
+            <span>Yes</span>
+          </label>
+          <label class="form-radio-item">
+            <input type="radio" name="adult_invest" value="no" onchange="checkQualify()">
+            <span>No</span>
+          </label>
+        </div>
+      </div>
 
-    <!-- PARENT COHORT REDIRECT NOTE -->
-    <div id="parent-cohort" style="display:none; background:var(--parchment); border:1px solid var(--border); border-left:3px solid var(--clay); border-radius:0 2px 2px 0; padding:24px; margin-top:16px;">
-      <p style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--soil); margin-bottom:8px;">The Career Clarity Cohort may be the right starting point.</p>
-      <p style="font-size:14px; color:var(--walnut); line-height:1.7; margin-bottom:16px;">A structured, small-group experience led by Dr. Joanne — designed to give your child clarity and direction before university decisions are locked in. Starting May 2.</p>
-      <a href="index.html" style="display:inline-block; background:var(--clay); color:#fff; font-family:'Jost',sans-serif; font-size:13px; font-weight:600; letter-spacing:0.06em; padding:12px 24px; border-radius:2px; text-decoration:none;">View the Cohort Program</a>
+      <div class="form-group">
+        <label class="form-label">Seniority level <span class="req">*</span></label>
+        <select class="form-select" id="seniority">
+          <option value="" disabled selected>Select your level</option>
+          <option>Student / Grad</option>
+          <option>Junior</option>
+          <option>Mid-level</option>
+          <option>Senior</option>
+          <option>Manager / Director</option>
+          <option>C-Suite</option>
+        </select>
+      </div>
     </div>
 
     <!-- HOW DID YOU HEAR -->
@@ -514,7 +561,6 @@ footer {
 
 <script>
 const COHORT_URL = 'career-clarity-cohort-v6.html';
-
 let currentAudience = 'parent';
 
 function selectAudience(type) {
@@ -524,37 +570,40 @@ function selectAudience(type) {
   document.getElementById('parent-fields').style.display = type === 'parent' ? 'block' : 'none';
   document.getElementById('adult-fields').style.display  = type === 'adult'  ? 'block' : 'none';
 
-  // Swap investment box copy
-  document.getElementById('investment-box-parent').style.display = type === 'parent' ? 'block' : 'none';
-  document.getElementById('investment-box-adult').style.display  = type === 'adult'  ? 'block' : 'none';
+  // Show/hide qualifying sections
+  document.getElementById('qualify-parent').style.display = type === 'parent' ? 'block' : 'none';
+  document.getElementById('qualify-adult').style.display  = type === 'adult'  ? 'block' : 'none';
 
-  // Show/hide the "not ready" option — adults get it too but with different outcome
-  document.getElementById('inv-unsure-row').style.display = 'flex';
+  // Reset radios
+  document.querySelectorAll('input[name="parent_invest"], input[name="adult_invest"]').forEach(r => r.checked = false);
 
-  // Reset investment selection and hide outcome panels
-  document.querySelectorAll('input[name="investment"]').forEach(r => r.checked = false);
-  document.getElementById('adult-closed').style.display  = 'none';
-  document.getElementById('parent-cohort').style.display = 'none';
+  // Reset visibility
+  document.getElementById('parent-extra-qs').style.display = 'block';
+  document.getElementById('parent-disqualified').style.display = 'none';
   document.getElementById('main-form-rest').style.display = 'block';
 }
 
-function checkInvestment() {
-  const val = document.querySelector('input[name="investment"]:checked')?.value;
-
-  // Reset outcome panels
-  document.getElementById('adult-closed').style.display  = 'none';
-  document.getElementById('parent-cohort').style.display = 'none';
-  document.getElementById('main-form-rest').style.display = 'block';
-
-  if (val === 'unsure') {
-    document.getElementById('main-form-rest').style.display = 'none';
-    if (currentAudience === 'adult') {
-      document.getElementById('adult-closed').style.display = 'block';
+function checkQualify() {
+  if (currentAudience === 'parent') {
+    var val = document.querySelector('input[name="parent_invest"]:checked')?.value;
+    if (val === 'no') {
+      // Parent says No → disqualify, hide the rest
+      document.getElementById('parent-extra-qs').style.display = 'none';
+      document.getElementById('parent-disqualified').style.display = 'block';
+      document.getElementById('main-form-rest').style.display = 'none';
     } else {
-      document.getElementById('parent-cohort').style.display = 'block';
+      document.getElementById('parent-extra-qs').style.display = 'block';
+      document.getElementById('parent-disqualified').style.display = 'none';
+      document.getElementById('main-form-rest').style.display = 'block';
     }
   }
+  // Adults: no disqualification — both Yes/No keep the form open
 }
+
+// Importance slider live value
+document.getElementById('importance-scale')?.addEventListener('input', function() {
+  document.getElementById('importance-value').textContent = this.value;
+});
 
 function handleSubmit() {
   var SUPA_URL = 'https://ljwrcnquefgucelbzwzq.supabase.co';
@@ -564,18 +613,23 @@ function handleSubmit() {
   const lname = document.getElementById('lname').value.trim();
   const email = document.getElementById('email').value.trim();
   const phone = document.getElementById('phone').value.trim();
-  const inv   = document.querySelector('input[name="investment"]:checked')?.value;
 
   if (!fname || !email || !phone) {
     alert('Please fill in your name, email, and phone number.');
     return;
   }
-  if (!inv) {
-    alert('Please confirm your investment readiness.');
-    return;
+
+  // Determine invest answer based on audience
+  var investAnswer = '';
+  if (currentAudience === 'parent') {
+    investAnswer = document.querySelector('input[name="parent_invest"]:checked')?.value || '';
+    if (!investAnswer) { alert('Please answer: Are you ready to invest in your child\'s future?'); return; }
+  } else {
+    investAnswer = document.querySelector('input[name="adult_invest"]:checked')?.value || '';
+    if (!investAnswer) { alert('Please answer: Are you willing to invest in your professional development?'); return; }
   }
 
-  // Collect optional fields based on audience type
+  // Collect fields
   var situation = '';
   var childYear = '';
   var notes = '';
@@ -585,15 +639,25 @@ function handleSubmit() {
   if (currentAudience === 'parent') {
     childYear = document.getElementById('year-group')?.value || '';
     situation = document.getElementById('situation-parent')?.value || '';
-    notes = (document.getElementById('tried-parent')?.value || '') + (extra ? '\n\nExtra: ' + extra : '');
+    var prevPrograms = document.getElementById('prev-programs')?.value || '';
+    var importance = document.getElementById('importance-scale')?.value || '';
+    var tried = document.getElementById('tried-parent')?.value || '';
+    notes = (tried ? 'Tried: ' + tried : '')
+      + (prevPrograms ? '\nPrev programs: ' + prevPrograms : '')
+      + (importance ? '\nImportance: ' + importance + '/10' : '')
+      + (extra ? '\nExtra: ' + extra : '');
   } else {
     situation = document.getElementById('situation-adult')?.value || '';
+    var seniority = document.getElementById('seniority')?.value || '';
     var tried = document.getElementById('tried-adult')?.value || '';
     var outcome = document.getElementById('outcome-adult')?.value || '';
-    notes = (tried ? 'Tried: ' + tried : '') + (outcome ? '\nOutcome: ' + outcome : '') + (extra ? '\nExtra: ' + extra : '');
+    notes = (tried ? 'Tried: ' + tried : '')
+      + (outcome ? '\nOutcome: ' + outcome : '')
+      + (seniority ? '\nSeniority: ' + seniority : '')
+      + (extra ? '\nExtra: ' + extra : '');
   }
 
-  // ── Save to Supabase (fire-and-forget) ──
+  // ── Save to Supabase ──
   fetch(SUPA_URL + '/rest/v1/form_submissions', {
     method: 'POST',
     headers: {
@@ -609,29 +673,29 @@ function handleSubmit() {
       phone:      phone,
       child_year: childYear,
       situation:  situation,
-      investment: inv,
+      investment: investAnswer,
       source:     'standalone-form (' + currentAudience + ')',
       notes:      notes
     })
   }).catch(function() {});
 
-  // Meta Pixel — fire on every submission
+  // Meta Pixel
   if (typeof fbq === 'function') {
     fbq('track', 'Lead');
-    fbq('trackCustom', 'ApplicationSubmitted', { investment: inv });
+    fbq('trackCustom', 'ApplicationSubmitted', { investment: investAnswer, audience: currentAudience });
   }
 
-  if (inv === 'yes') {
-    // Qualified → redirect to Stan Store booking
-    window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
-  } else {
-    // Not ready → show thank-you message, hide form
+  // Routing
+  if (currentAudience === 'parent' && investAnswer === 'no') {
+    // Parent said No → already showing disqualified message via checkQualify
+    // But if they somehow got here, show thank you
     document.getElementById('main-form-rest').style.display = 'none';
-    document.getElementById('submit-btn').style.display = 'none';
-    document.querySelector('.form-note').style.display = 'none';
-    document.getElementById('thankYouMessage').style.display = 'block';
-    document.getElementById('thankYouMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('parent-disqualified').style.display = 'block';
+    return;
   }
+
+  // Everyone else (parent yes, adult yes or no) → book a call
+  window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
 }
 
 // Show parent fields by default
