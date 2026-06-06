@@ -498,20 +498,6 @@ footer {
       <span class="form-section-label">A few more questions</span>
 
       <div class="form-group">
-        <label class="form-label">Are you willing to invest in your professional development? <span class="req">*</span></label>
-        <div class="form-radio-group" id="adult-invest-group">
-          <label class="form-radio-item">
-            <input type="radio" name="adult_invest" value="yes" onchange="checkQualify()">
-            <span>Yes</span>
-          </label>
-          <label class="form-radio-item">
-            <input type="radio" name="adult_invest" value="no" onchange="checkQualify()">
-            <span>No</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="form-group">
         <label class="form-label">Seniority level <span class="req">*</span></label>
         <select class="form-select" id="seniority">
           <option value="" disabled selected>Select your level</option>
@@ -542,6 +528,24 @@ footer {
       <div class="form-group">
         <label class="form-label">Anything else you would like Dr. Joanne to know?</label>
         <textarea class="form-textarea" id="extra" placeholder="Optional"></textarea>
+      </div>
+
+      <!-- Adult invest question — last before submit -->
+      <div id="adult-invest-wrap" style="display:none;">
+        <hr class="form-divider">
+        <div class="form-group">
+          <label class="form-label">Are you willing to invest in your professional development? <span class="req">*</span></label>
+          <div class="form-radio-group" id="adult-invest-group">
+            <label class="form-radio-item">
+              <input type="radio" name="adult_invest" value="yes" onchange="checkQualify()">
+              <span>Yes</span>
+            </label>
+            <label class="form-radio-item">
+              <input type="radio" name="adult_invest" value="no" onchange="checkQualify()">
+              <span>No</span>
+            </label>
+          </div>
+        </div>
       </div>
       <button class="form-submit" id="submit-btn" onclick="handleSubmit()">Submit My Application</button>
       <p class="form-note">Dr. Joanne personally reviews every application and will respond within 48 hours. Submitting this form does not guarantee a session.</p>
@@ -580,6 +584,7 @@ function selectAudience(type) {
   // Reset visibility
   document.getElementById('parent-extra-qs').style.display = 'block';
   document.getElementById('parent-disqualified').style.display = 'none';
+  document.getElementById('adult-invest-wrap').style.display = type === 'adult' ? 'block' : 'none';
   document.getElementById('main-form-rest').style.display = 'block';
 }
 
