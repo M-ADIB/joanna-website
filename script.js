@@ -314,7 +314,12 @@
 
       // ── Show inline success then route by selection ──
       if (formContent) formContent.style.display = 'none';
-      if (formSuccess) formSuccess.style.display = 'block';
+      if (investment === 'yes') {
+        if (formSuccess) formSuccess.style.display = 'block';
+      } else {
+        var cohortSuccess = document.getElementById('formSuccessCohort');
+        if (cohortSuccess) cohortSuccess.style.display = 'block';
+      }
       const section = form.closest('section');
       if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
