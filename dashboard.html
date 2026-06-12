@@ -156,6 +156,261 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--soil);min
   .coming-pane p{font-size:13px;}
   .topbar-date{display:none;}
 }
+
+/* ── KANBAN BOARD ── */
+.kanban-board {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 24px;
+  align-items: flex-start;
+  min-height: calc(100vh - 280px);
+}
+.kanban-column {
+  flex: 1;
+  min-width: 250px;
+  max-width: 320px;
+  background: #f5ede6;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 220px);
+  transition: background-color 0.2s;
+}
+.kanban-column.drag-over {
+  background: #ecdcd2;
+}
+.kanban-column-header {
+  padding: 16px 14px 12px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--soil);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(43,30,22,0.06);
+}
+.kanban-column-count {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--walnut);
+  color: var(--cream);
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+.kanban-cards {
+  padding: 12px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 200px;
+}
+.kanban-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px;
+  cursor: grab;
+  user-select: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.kanban-card:active {
+  cursor: grabbing;
+}
+.kanban-card.dragging {
+  opacity: 0.4;
+  transform: scale(0.97);
+}
+.kanban-card:hover {
+  box-shadow: 0 4px 14px rgba(43,30,22,0.06);
+}
+.kanban-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--soil);
+  margin-bottom: 4px;
+}
+.kanban-card-snippet {
+  font-size: 12px;
+  color: var(--walnut);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.kanban-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--faint);
+  margin-top: 4px;
+}
+
+/* ── MODAL OVERLAY & CONTAINER ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(43,30,22,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show {
+  display: flex;
+}
+.modal-container {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 36px rgba(43,30,22,0.15);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px);
+  transition: transform 0.2s ease;
+}
+.modal-overlay.show .modal-container {
+  transform: translateY(0);
+}
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--soil);
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--faint);
+  transition: color 0.15s;
+}
+.modal-close:hover {
+  color: var(--clay-dk);
+}
+.modal-body {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 24px;
+}
+@media(max-width:600px){
+  .modal-body { grid-template-columns: 1fr; gap: 14px; }
+  .kanban-board { flex-direction: column; align-items: stretch; }
+  .kanban-column { min-width: 100%; max-width: 100%; max-height: 380px; }
+}
+.modal-section {
+  grid-column: 1 / -1;
+}
+.modal-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 5px;
+}
+.modal-value {
+  font-size: 13.5px;
+  color: var(--soil);
+  line-height: 1.5;
+}
+.modal-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 11px 14px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13.5px;
+  color: var(--soil);
+  outline: none;
+  background: var(--cream);
+  resize: vertical;
+  min-height: 80px;
+}
+.modal-input:focus {
+  border-color: var(--clay-dk);
+}
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-primary {
+  background: var(--clay-dk);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #b5606f;
+}
+.btn-secondary {
+  background: var(--cream);
+  color: var(--walnut);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover {
+  background: var(--border);
+}
+.btn-danger {
+  background: #fde8e8;
+  color: #c81e1e;
+  border: 1px solid #f8b4b4;
+}
+.btn-danger:hover {
+  background: #e53e3e;
+  color: #fff;
+}
+.modal-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13.5px;
+  background: var(--cream);
+  color: var(--soil);
+  outline: none;
+}
+.modal-select:focus {
+  border-color: var(--clay-dk);
+}
 </style>
 </head>
 <body>
@@ -255,7 +510,7 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--soil);min
           <button class="filter-btn" data-filter="unsure">Unsure</button>
         </div>
       </div>
-      <div class="cards" id="cardsWrap">
+      <div class="kanban-board" id="kanbanBoard">
         <div class="loading-wrap"><div class="spinner"></div></div>
       </div>
     </div>
@@ -322,6 +577,65 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--soil);min
   </div>
 </div>
 
+<!-- LEAD DETAILS MODAL -->
+<div class="modal-overlay" id="leadModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalLeadName">Lead Details</h3>
+      <button class="modal-close" id="modalCloseBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <div class="modal-label">Contact Details</div>
+        <div class="modal-value" id="modalLeadContact"></div>
+      </div>
+      <div>
+        <div class="modal-label">Program Choice</div>
+        <div class="modal-value" id="modalLeadIntent"></div>
+      </div>
+      <div>
+        <div class="modal-label">Audience / Year Group</div>
+        <div class="modal-value" id="modalLeadYear"></div>
+      </div>
+      <div>
+        <div class="modal-label">How they found you</div>
+        <div class="modal-value" id="modalLeadSource"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-label">Their Situation</div>
+        <div class="modal-value" style="background:var(--cream); padding:12px; border-radius:4px; border:1px solid var(--border); white-space: pre-wrap;" id="modalLeadSituation"></div>
+      </div>
+      <div class="modal-section" id="modalLeadNotesContainer">
+        <div class="modal-label">Notes from Form</div>
+        <div class="modal-value" style="background:var(--cream); padding:12px; border-radius:4px; border:1px solid var(--border); white-space: pre-wrap;" id="modalLeadNotes"></div>
+      </div>
+      
+      <!-- CRM Section -->
+      <div class="modal-section" style="border-top:1px solid var(--border); padding-top:16px; margin-top:8px;">
+        <div class="modal-label">Pipeline Stage (Status)</div>
+        <select class="modal-select" id="modalLeadStatus">
+          <option value="new">New Lead</option>
+          <option value="contacted">Contacted</option>
+          <option value="qualified">Qualified</option>
+          <option value="booked">Booked Call</option>
+          <option value="enrolled">Enrolled</option>
+        </select>
+      </div>
+      <div class="modal-section">
+        <div class="modal-label">Internal CRM Notes</div>
+        <textarea class="modal-input" id="modalLeadCrmNotes" placeholder="Add custom notes here (e.g. 'Spoke on phone, very interested', 'Will follow up next Tuesday')"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" id="modalDeleteBtn">Delete Lead</button>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-secondary" id="modalCancelBtn">Cancel</button>
+        <button class="btn btn-primary" id="modalSaveBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   const SUPA_URL = 'https://ljwrcnquefgucelbzwzq.supabase.co';
@@ -374,13 +688,23 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--soil);min
     }
   }
 
+  // Stages configuration
+  const STAGES = [
+    { id: 'new', name: 'New Leads' },
+    { id: 'contacted', name: 'Contacted' },
+    { id: 'qualified', name: 'Qualified' },
+    { id: 'booked', name: 'Booked Call' },
+    { id: 'enrolled', name: 'Enrolled' }
+  ];
+  let activeLeadId = null;
+
   // Filters
   document.querySelectorAll('.filter-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
       document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       currentFilter = btn.dataset.filter;
-      renderCards();
+      renderKanbanBoard();
     });
   });
 
@@ -392,11 +716,11 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--soil);min
   .then(data=>{
     allData = data||[];
     updateStats();
-    renderCards();
+    renderKanbanBoard();
     document.getElementById('sidebarCount').textContent = allData.length;
   })
   .catch(()=>{
-    document.getElementById('cardsWrap').innerHTML='<div class="empty"><h3>Couldn\'t connect</h3><p>Check your internet connection and refresh.</p></div>';
+    document.getElementById('kanbanBoard').innerHTML='<div class="empty" style="grid-column:1/-1; width:100%;"><h3>Couldn\'t connect</h3><p>Check your internet connection and refresh.</p></div>';
   });
 
   function updateStats(){
@@ -410,14 +734,251 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--soil);min
     document.getElementById('statUnsure').textContent=unsure;
   }
 
-  function renderCards(){
+  function renderKanbanBoard(){
     const filtered = currentFilter==='all' ? allData : allData.filter(s=>s.investment===currentFilter);
-    const wrap = document.getElementById('cardsWrap');
-    if(!filtered.length){
-      wrap.innerHTML='<div class="empty"><h3>No applications yet</h3><p>Submissions from the landing page will appear here automatically.</p></div>';
+    const board = document.getElementById('kanbanBoard');
+    
+    if(!allData.length){
+      board.innerHTML='<div class="empty" style="grid-column:1/-1; width:100%;"><h3>No applications yet</h3><p>Submissions from the landing page will appear here automatically.</p></div>';
       return;
     }
-    wrap.innerHTML = filtered.map(cardHTML).join('');
+    
+    if(!filtered.length){
+      board.innerHTML='<div class="empty" style="grid-column:1/-1; width:100%;"><h3>No matching leads</h3><p>Try changing your filter settings above.</p></div>';
+      return;
+    }
+
+    const columnsHTML = STAGES.map(stage => {
+      const stageLeads = filtered.filter(s => (s.status || 'new') === stage.id);
+      const cardsHTML = stageLeads.map(s => {
+        const timeText = timeAgo(s.created_at);
+        const badge = badgeHTML(s.investment);
+        const snippet = s.situation ? `<div class="kanban-card-snippet">${esc(s.situation)}</div>` : '';
+        return `<div class="kanban-card" draggable="true" data-id="${s.id}" id="card-${s.id}">
+          <div class="kanban-card-title">${esc(s.first_name)} ${esc(s.last_name)}</div>
+          ${snippet}
+          <div style="font-size:11px; margin-bottom:4px; color:var(--walnut); font-weight:500;">
+            ${esc(s.email)}
+          </div>
+          <div class="kanban-card-meta">
+            ${badge}
+            <span>${timeText}</span>
+          </div>
+        </div>`;
+      }).join('');
+
+      return `<div class="kanban-column" data-stage="${stage.id}">
+        <div class="kanban-column-header">
+          <span>${stage.name}</span>
+          <span class="kanban-column-count">${stageLeads.length}</span>
+        </div>
+        <div class="kanban-cards">
+          ${cardsHTML || '<div style="font-size:11px; color:var(--faint); text-align:center; padding:32px 0;">Drop leads here</div>'}
+        </div>
+      </div>`;
+    }).join('');
+
+    board.innerHTML = columnsHTML;
+    setupDragAndDrop();
+    setupCardClicks();
+  }
+
+  function setupDragAndDrop(){
+    const cards = document.querySelectorAll('.kanban-card');
+    const columns = document.querySelectorAll('.kanban-column');
+
+    cards.forEach(card => {
+      card.addEventListener('dragstart', (e)=>{
+        card.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', card.dataset.id);
+      });
+      card.addEventListener('dragend', ()=>{
+        card.classList.remove('dragging');
+      });
+    });
+
+    columns.forEach(col => {
+      col.addEventListener('dragover', (e)=>{
+        e.preventDefault();
+        col.classList.add('drag-over');
+      });
+      col.addEventListener('dragleave', ()=>{
+        col.classList.remove('drag-over');
+      });
+      col.addEventListener('drop', (e)=>{
+        e.preventDefault();
+        col.classList.remove('drag-over');
+        const leadId = e.dataTransfer.getData('text/plain');
+        const newStage = col.dataset.stage;
+        if(leadId && newStage){
+          updateLeadStatus(leadId, newStage);
+        }
+      });
+    });
+  }
+
+  function updateLeadStatus(leadId, newStatus){
+    const lead = allData.find(l=>l.id === leadId);
+    if(lead){
+      lead.status = newStatus;
+      updateStats();
+      renderKanbanBoard();
+
+      fetch(SUPA_URL+'/rest/v1/form_submissions?id=eq.'+leadId, {
+        method:'PATCH',
+        headers:{
+          'Content-Type':'application/json',
+          'apikey':SUPA_KEY,
+          'Authorization':'Bearer '+SUPA_KEY
+        },
+        body: JSON.stringify({ status: newStatus })
+      })
+      .catch(err => console.error('Failed to update status in DB:', err));
+    }
+  }
+
+  function setupCardClicks(){
+    document.querySelectorAll('.kanban-card').forEach(card => {
+      card.addEventListener('click', (e)=>{
+        if(card.classList.contains('dragging')) return;
+        openLeadModal(card.dataset.id);
+      });
+    });
+  }
+
+  // Lead Details Modal handlers
+  const modal = document.getElementById('leadModal');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+  const modalCancelBtn = document.getElementById('modalCancelBtn');
+  const modalSaveBtn = document.getElementById('modalSaveBtn');
+  const modalDeleteBtn = document.getElementById('modalDeleteBtn');
+
+  function openLeadModal(leadId){
+    const lead = allData.find(l=>l.id === leadId);
+    if(!lead) return;
+    activeLeadId = leadId;
+
+    document.getElementById('modalLeadName').textContent = `${lead.first_name || ''} ${lead.last_name || ''}`;
+    
+    let contactHTML = `<a href="mailto:${esc(lead.email)}">${esc(lead.email)}</a>`;
+    if(lead.phone){
+      contactHTML += ` · <a href="tel:${esc(lead.phone)}">${esc(lead.phone)}</a>`;
+    }
+    document.getElementById('modalLeadContact').innerHTML = contactHTML;
+    document.getElementById('modalLeadIntent').innerHTML = badgeHTML(lead.investment);
+    document.getElementById('modalLeadYear').textContent = lead.child_year || 'N/A';
+    document.getElementById('modalLeadSource').textContent = lead.source || 'N/A';
+    document.getElementById('modalLeadSituation').textContent = lead.situation || 'None provided';
+
+    const notesContainer = document.getElementById('modalLeadNotesContainer');
+    if(lead.notes){
+      notesContainer.style.display = 'block';
+      document.getElementById('modalLeadNotes').textContent = lead.notes;
+    } else {
+      notesContainer.style.display = 'none';
+    }
+
+    document.getElementById('modalLeadStatus').value = lead.status || 'new';
+    document.getElementById('modalLeadCrmNotes').value = lead.crm_notes || '';
+
+    modal.classList.add('show');
+  }
+
+  function closeLeadModal(){
+    modal.classList.remove('show');
+    activeLeadId = null;
+  }
+
+  if(modalCloseBtn) modalCloseBtn.addEventListener('click', closeLeadModal);
+  if(modalCancelBtn) modalCancelBtn.addEventListener('click', closeLeadModal);
+  if(modal){
+    modal.addEventListener('click', (e)=>{
+      if(e.target === modal) closeLeadModal();
+    });
+  }
+
+  if(modalSaveBtn){
+    modalSaveBtn.addEventListener('click', ()=>{
+      if(!activeLeadId) return;
+      const newStatus = document.getElementById('modalLeadStatus').value;
+      const newCrmNotes = document.getElementById('modalLeadCrmNotes').value;
+
+      const lead = allData.find(l=>l.id === activeLeadId);
+      if(lead){
+        lead.status = newStatus;
+        lead.crm_notes = newCrmNotes;
+
+        modalSaveBtn.textContent = 'Saving...';
+        modalSaveBtn.disabled = true;
+
+        fetch(SUPA_URL+'/rest/v1/form_submissions?id=eq.'+activeLeadId, {
+          method:'PATCH',
+          headers:{
+            'Content-Type':'application/json',
+            'apikey':SUPA_KEY,
+            'Authorization':'Bearer '+SUPA_KEY
+          },
+          body: JSON.stringify({
+            status: newStatus,
+            crm_notes: newCrmNotes
+          })
+        })
+        .then(r => {
+          if(r.ok){
+            closeLeadModal();
+            updateStats();
+            renderKanbanBoard();
+          } else {
+            alert('Failed to save changes. Please try again.');
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Network error saving changes.');
+        })
+        .finally(()=>{
+          modalSaveBtn.textContent = 'Save Changes';
+          modalSaveBtn.disabled = false;
+        });
+      }
+    });
+  }
+
+  if(modalDeleteBtn){
+    modalDeleteBtn.addEventListener('click', ()=>{
+      if(!activeLeadId) return;
+      if(confirm('Are you sure you want to permanently delete this lead? This cannot be undone.')){
+        modalDeleteBtn.textContent = 'Deleting...';
+        modalDeleteBtn.disabled = true;
+
+        fetch(SUPA_URL+'/rest/v1/form_submissions?id=eq.'+activeLeadId, {
+          method:'DELETE',
+          headers:{
+            'apikey':SUPA_KEY,
+            'Authorization':'Bearer '+SUPA_KEY
+          }
+        })
+        .then(r => {
+          if(r.ok){
+            allData = allData.filter(l=>l.id !== activeLeadId);
+            closeLeadModal();
+            updateStats();
+            renderKanbanBoard();
+            document.getElementById('sidebarCount').textContent = allData.length;
+          } else {
+            alert('Failed to delete lead. Please try again.');
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Network error deleting lead.');
+        })
+        .finally(()=>{
+          modalDeleteBtn.textContent = 'Delete Lead';
+          modalDeleteBtn.disabled = false;
+        });
+      }
+    });
   }
 
   function badgeHTML(v){
@@ -438,27 +999,6 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--soil);min
     const hrs=Math.floor(mins/60);
     if(hrs<24) return hrs+'h ago';
     return Math.floor(hrs/24)+'d ago';
-  }
-
-  function cardHTML(s){
-    const phone=s.phone?'<span style="margin-left:10px">· <a href="tel:'+esc(s.phone)+'">'+esc(s.phone)+'</a></span>':'';
-    return `<div class="sub-card">
-      <div class="card-top">
-        <div>
-          <div class="card-name">${esc(s.first_name)} ${esc(s.last_name)}</div>
-          <div class="card-contact"><a href="mailto:${esc(s.email)}">${esc(s.email)}</a>${phone}</div>
-        </div>
-        ${badgeHTML(s.investment)}
-      </div>
-      <hr class="card-divider">
-      <div class="card-details">
-        ${s.child_year?`<div><div class="detail-label">Year Group</div><div class="detail-value">${esc(s.child_year)}</div></div>`:''}
-        ${s.source?`<div><div class="detail-label">How they found you</div><div class="detail-value">${esc(s.source)}</div></div>`:''}
-        ${s.situation?`<div class="detail-full"><div class="detail-label">Their Situation</div><div class="detail-value">${esc(s.situation)}</div></div>`:''}
-        ${s.notes?`<div class="detail-full"><div class="detail-label">Additional Notes</div><div class="detail-value">${esc(s.notes)}</div></div>`:''}
-      </div>
-      <div class="card-date">Submitted ${timeAgo(s.created_at)}</div>
-    </div>`;
   }
 
   function buildAnalytics(){
