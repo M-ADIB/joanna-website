@@ -662,6 +662,13 @@ function handleSubmit() {
       + (extra ? '\nExtra: ' + extra : '');
   }
 
+  // Disable button while submitting
+  var btn = document.getElementById('submit-btn');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+  }
+
   // ── Save to Supabase ──
   fetch(SUPA_URL + '/rest/v1/form_submissions', {
     method: 'POST',
@@ -682,7 +689,13 @@ function handleSubmit() {
       source:     'standalone-form (' + currentAudience + ')',
       notes:      notes
     })
-  }).catch(function() {});
+  })
+  .then(function() {
+    routeNext();
+  })
+  .catch(function() {
+    routeNext();
+  });
 
   // Meta Pixel
   if (typeof fbq === 'function') {
@@ -690,17 +703,25 @@ function handleSubmit() {
     fbq('trackCustom', 'ApplicationSubmitted', { investment: investAnswer, audience: currentAudience });
   }
 
-  // Routing
-  if (currentAudience === 'parent' && investAnswer === 'no') {
-    // Parent said No → already showing disqualified message via checkQualify
-    // But if they somehow got here, show thank you
-    document.getElementById('main-form-rest').style.display = 'none';
-    document.getElementById('parent-disqualified').style.display = 'block';
-    return;
-  }
+  function routeNext() {
+    if (currentAudience === 'parent' && investAnswer === 'no') {
+      // Parent said No → already showing disqualified message via checkQualify
+      // But if they somehow got here, show thank you
+      document.getElementById('main-form-rest').style.display = 'none';
+      document.getElementById('parent-disqualified').style.display = 'block';
+      return;
+    }
 
-  // Everyone else (parent yes, adult yes or no) → book a call
-  window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
+    // Everyone else (parent yes, adult yes or no) → book a call
+    if (window.E2E_TESTING) {
+      console.log("E2E_TESTING: Suppressing redirect to Stan Store");
+      // Show thank you message so we know it submitted
+      document.getElementById('main-form-rest').style.display = 'none';
+      document.getElementById('thankYouMessage').style.display = 'block';
+      return;
+    }
+    window.location.href = 'https://stan.store/DrJoanne/p/book-a-11-call-with-me-5fde61ac';
+  }
 }
 
 // Show parent fields by default
