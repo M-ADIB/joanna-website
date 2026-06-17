@@ -712,15 +712,20 @@ body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--soil);min
   fetch(SUPA_URL+'/rest/v1/form_submissions?select=*&order=created_at.desc',{
     headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
   })
-  .then(r=>r.json())
+  .then(r=>{
+    if(!r.ok) throw new Error('HTTP error: ' + r.status);
+    return r.json();
+  })
   .then(data=>{
+    if(!Array.isArray(data)) throw new Error('Data is not an array');
     allData = data||[];
     updateStats();
     renderKanbanBoard();
     document.getElementById('sidebarCount').textContent = allData.length;
   })
-  .catch(()=>{
-    document.getElementById('kanbanBoard').innerHTML='<div class="empty" style="grid-column:1/-1; width:100%;"><h3>Couldn\'t connect</h3><p>Check your internet connection and refresh.</p></div>';
+  .catch((err)=>{
+    console.error(err);
+    document.getElementById('kanbanBoard').innerHTML='<div class="empty" style="grid-column:1/-1; width:100%;"><h3>Couldn\'t connect to database</h3><p>Could not load database table. Make sure the database schema is initialized and try refreshing.</p></div>';
   });
 
   function updateStats(){
