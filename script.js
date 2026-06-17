@@ -42,8 +42,8 @@
   // Fetches cohort_start_date and replaces EVERY date mention in the DOM —
   // tagged elements (data-cohort-date) AND raw text nodes (banner, buttons, etc.)
   (function loadCohortDate() {
-    var SUPA = 'https://nsvippefcyeccztwpyyu.supabase.co';
-    var KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zdmlwcGVmY3llY2N6dHdweXl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MTU3MTksImV4cCI6MjA5Njk5MTcxOX0.OU2Y7zYhfAFtrXiQuwVVApx_g3I9PNrSjuifI87SivQ';
+    var SUPA = 'https://ljwrcnquefgucelbzwzq.supabase.co';
+    var KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3JjbnF1ZWZndWNlbGJ6d3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzA4MzksImV4cCI6MjA5MjUwNjgzOX0.gECut5Xi7sZisAgWNQ4um7kflP_UXQUo5IaFFYEv4g0';
 
     // ── Walk every text node in the DOM and replace date patterns ──
     function replaceTextDates(oldShort, oldFull, newShort, newFull) {
@@ -223,8 +223,8 @@
   });
 
   // ─── FORM VALIDATION & SUBMISSION ───
-  const SUPABASE_URL = 'https://nsvippefcyeccztwpyyu.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zdmlwcGVmY3llY2N6dHdweXl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MTU3MTksImV4cCI6MjA5Njk5MTcxOX0.OU2Y7zYhfAFtrXiQuwVVApx_g3I9PNrSjuifI87SivQ';
+  const SUPABASE_URL = 'https://ljwrcnquefgucelbzwzq.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3JjbnF1ZWZndWNlbGJ6d3pxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5MzA4MzksImV4cCI6MjA5MjUwNjgzOX0.gECut5Xi7sZisAgWNQ4um7kflP_UXQUo5IaFFYEv4g0';
 
   const form         = document.getElementById('applicationForm');
   const formContent  = document.getElementById('formContent');
